@@ -57,6 +57,12 @@ def run_game(screen):
                     else:
                         lives -= 1
                     officer.hide()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if exit_button.collidepoint(event.pos):
+                    pygame.quit()
+                    sys.exit()
+
             if officer.visible:
                 text_surface = wave_font.render("A - CALL ATTENTION ON DECK", True, (255, 255, 255))
                 screen.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, HEIGHT - 50))
@@ -65,10 +71,6 @@ def run_game(screen):
                 text_surface = wave_font.render("", True, (255, 255, 255))
 
 
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if exit_button.collidepoint(event.pos):
-                    pygame.quit()
-                    sys.exit()
 
         # Draw everything
         screen.fill(WHITE)
