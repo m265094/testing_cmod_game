@@ -9,7 +9,7 @@ class Officer(pygame.sprite.Sprite):
         self.image = pygame.image.load("../testing_cmod_game/assets/sprite/officer.JPG").convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
-        self.rect.topleft = (16 * CELL_SIZE, 16 * CELL_SIZE)
+        self.rect.topleft = (20 * CELL_SIZE, 6 * CELL_SIZE)
         self.visible = False
         self.timer = 0
         self.time_until_appear = random.randint(15, 20) * 1000  # Initial random time in milliseconds

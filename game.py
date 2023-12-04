@@ -64,12 +64,23 @@ def run_game(screen):
                     sys.exit()
 
             if officer.visible:
-                text_surface = wave_font.render("A - CALL ATTENTION ON DECK", True, (255, 255, 255))
-                screen.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, HEIGHT - 50))
+                # Check if the officer's time limit has been reached
+                elapsed_time = current_time - officer.timer
+                if elapsed_time >= 6000:  # 6 seconds
+                    officer.hide()
+                    lives -= 1
+                    # Display "TOO LATE!" text for 2 seconds
+                    too_late_text = wave_font.render("TOO LATE!", True, (255, 0, 0))
+                    screen.blit(too_late_text, (WIDTH // 2 - too_late_text.get_width() // 2, HEIGHT - 50))
+                    pygame.display.flip()
+                    pygame.time.delay(2000)
+                else:
+                    text_surface = wave_font.render("A - CALL ATTENTION ON DECK", True, (255, 255, 255))
+                    screen.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, HEIGHT - 50))
+
             elif officer_appeared and not officer.visible:
                 # Officer has disappeared, hide the text
                 text_surface = wave_font.render("", True, (255, 255, 255))
-
 
 
         # Draw everything
