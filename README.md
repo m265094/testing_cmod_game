@@ -15,14 +15,15 @@ Trash - Yellow Block
 How to play 
 
 Movement
-- Move Up _  Up Arrow
-- Move Down _  Down Arrow
-- Move Left _  Left Arrow
-- Move Right _  Right Arrow
+- ↑  Up Arrow    - Move Up    
+- ↓  Down Arrow  - Move Down
+- ←  Left Arrow  - Move Left
+- →  Right Arrow - Move Right
 
-- Key A - Calls "Attention On Deck"
+Keys 
+- A - Call "Attention On Deck"
 
-- You mouse to CLICK
-- "Start"
-- "Quit"
-- "Exit"
+Mouse CLICK
+- "Start" text
+- "Quit" text
+- "Exit" text
