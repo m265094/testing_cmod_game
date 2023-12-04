@@ -19,6 +19,11 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
+GREY = (125,125,125)
+COIN_COLOR = (255, 255, 0)
+HEALTH_BAR_WIDTH = WIDTH - 20
+HEALTH_BAR_HEIGHT = 20
+HEALTH_BAR_COLOR = (0, 255, 0)  # Green
 
 player_position = (3, 3)
 

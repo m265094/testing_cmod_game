@@ -12,12 +12,17 @@ class Officer(pygame.sprite.Sprite):
         self.rect.topleft = (20 * CELL_SIZE, 6 * CELL_SIZE)
         self.visible = False
         self.timer = 0
-        self.time_until_appear = random.randint(15, 20) * 1000  # Initial random time in milliseconds
+        self.base_time_until_appear = random.randint(15, 20) * 1000  # Initial random time in milliseconds
+        self.time_until_appear = self.base_time_until_appear
 
     def update_time_until_appear(self, wave):
         # Adjust the time until appear based on the current wave
-        self.time_until_appear = max(5000, 20000 - (wave - 1) * 1000)
+        self.base_time_until_appear -= 2000  # Reduce the base time by 2 seconds for each wave
+        self.base_time_until_appear = max(10000, self.base_time_until_appear)  # Ensure a minimum time
+        self.time_until_appear = self.base_time_until_appear
 
+    def reset_timer(self):
+        self.timer = 0
     def show(self):
         self.visible = True
         self.timer = pygame.time.get_ticks()
@@ -29,10 +34,11 @@ class Officer(pygame.sprite.Sprite):
         if self.visible:
             screen.blit(self.image, self.rect.topleft)
 
+
     def check_hit(self):
         if self.visible:
             elapsed_time = pygame.time.get_ticks() - self.timer
-            if elapsed_time <= 6000:  # 6 seconds
+            if elapsed_time <= 1500:
                 return True
             else:
                 return False

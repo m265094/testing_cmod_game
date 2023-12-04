@@ -3,8 +3,10 @@ import pygame
 import sys
 from button import Button
 from game import run_game
+from game import reset_game
 from officer import Officer
-
+pygame.mixer.init()
+start = pygame.mixer.Sound("../testing_cmod_game/assets/sound/jet_flyby1.wav")
 # Define INITIAL_PLAYER_LIVES
 INITIAL_PLAYER_LIVES = 3  # Replace 3 with the desired initial number of lives
 
@@ -22,6 +24,8 @@ class StartButton(Button):
         super().__init__(pos, "START", font, "#d7fcd4", "White", image)
 
 def main_menu():
+    pygame.mixer.init()
+    pygame.mixer.Sound.play(start)
     running = True
 
     while running:
@@ -49,10 +53,9 @@ def main_menu():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if START_BUTTON.check_for_input(MENU_MOUSE_POS):
                     print("Start button clicked!")
+                    pygame.mixer.Sound.stop(start)
                     # Reset relevant variables
-                    player_lives = INITIAL_PLAYER_LIVES
-                    current_wave = 1
-                    score = 0
+                    reset_game()
                     # Continue with the game
                     run_game(screen)
                 elif QUIT_BUTTON.check_for_input(MENU_MOUSE_POS):
