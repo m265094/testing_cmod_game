@@ -270,11 +270,12 @@ def run_game(screen):
         pygame.display.flip()
         pygame.time.delay(3000)
     else:
+        screen.fill(GREY)
         message = score_font.render("GAME OVER!!!", True, (255, 0, 0))
-        screen.blit(message, (WIDTH / 2 - message.get_width() / 2, HEIGHT / 2 - message.get_height() / 2))
+        screen.blit(message, (WIDTH / 1.25 - message.get_width() / 2, HEIGHT / 1.5 - message.get_height() / 2))
         score_text = score_font.render(f"Score: {score}", True, (0, 0, 0))
         screen.blit(score_text,
-                    (WIDTH / 2 - score_text.get_width() / 2, HEIGHT / 2 - 3 * score_text.get_height() / 2))
+                    (WIDTH / 1.25 - score_text.get_width() / 2, HEIGHT / 1.5 - 3 * score_text.get_height() / 2))
         pygame.display.flip()
         pygame.time.delay(3000)
 
