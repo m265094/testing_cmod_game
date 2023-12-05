@@ -8,6 +8,7 @@ from game import reset_game
 from officer import Officer
 pygame.mixer.init()
 start = pygame.mixer.Sound("../testing_cmod_game/assets/sound/jet_flyby1.wav")
+game = pygame.mixer.Sound("../testing_cmod_game/assets/sound/mixkit-deep-urban.wav")
 # Define INITIAL_PLAYER_LIVES
 INITIAL_PLAYER_LIVES = 3  # Replace 3 with the desired initial number of lives
 
@@ -55,10 +56,12 @@ def main_menu():
                 if START_BUTTON.check_for_input(MENU_MOUSE_POS):
                     print("Start button clicked!")
                     pygame.mixer.Sound.stop(start)
+                    pygame.mixer.Sound.play(game)
                     # Reset relevant variables
                     reset_game()
                     # Continue with the game
                     run_game(screen)
+                    pygame.mixer.Sound.stop(game)
                 elif QUIT_BUTTON.check_for_input(MENU_MOUSE_POS):
                     print("Quit button clicked!")
                     running = False

@@ -24,6 +24,7 @@ COIN_COLOR = (255, 255, 0)
 HEALTH_BAR_WIDTH = WIDTH - 20
 HEALTH_BAR_HEIGHT = 20
 HEALTH_BAR_COLOR = (0, 255, 0)  # Green
+MAX_SPEED = 5
 
 player_position = (3, 3)
 
@@ -36,6 +37,14 @@ row_3 = [0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,]
 maze = [row_0, row_0, row_1, row_1, row_1, row_1, row_2, row_2, row_2, row_1, row_1, row_1, row_1, row_0, row_0]
 maze_2 = [row_0, row_2, row_2, row_2, row_3, row_3, row_2, row_2, row_2, row_3, row_3, row_2, row_2, row_2, row_0]
 
+enemy_possible_positions = [
+    (4, 3),
+    (10, 3),
+    (16, 3),
+    (4, 11),
+    (10, 11),
+    (16, 11),
+]
 
 # Other game constants
 lives = 3

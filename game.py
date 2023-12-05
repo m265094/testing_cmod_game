@@ -17,6 +17,8 @@ drum = pygame.mixer.Sound("../testing_cmod_game/assets/sound/drum_roll.wav")
 chime = pygame.mixer.Sound("../testing_cmod_game/assets/sound/chime.wav")
 cannon = pygame.mixer.Sound("../testing_cmod_game/assets/sound/cannon_x.wav")
 minus = pygame.mixer.Sound("../testing_cmod_game/assets/sound/peeeooop_x.wav")
+game = pygame.mixer.Sound("../testing_cmod_game/assets/sound/mixkit-deep-urban.wav")
+
 def reset_game():
     global player_position, officer, lives, score, wave
     player_position = INITIAL_PLAYER_POSITION
@@ -107,6 +109,7 @@ def run_game(screen):
                         lives -= 1
                         attention_text_visible = True
                         pygame.mixer.Sound.play(drum)
+                        pygame.mixer.Sound.play(minus)
                     officer.hide()
 
         if attention_text_visible:
@@ -126,6 +129,7 @@ def run_game(screen):
             if elapsed_time >= 1500:  # 2 seconds
                 officer.hide()
                 lives -= 1
+                pygame.mixer.Sound.play(minus)
                 # Display "TOO LATE!" text for 2 seconds
                 too_late_text = wave_font.render("TOO LATE!", True, (255, 0, 0))
                 screen.blit(too_late_text, (WIDTH // 2 - too_late_text.get_width() // 2, HEIGHT - 50))
@@ -138,22 +142,6 @@ def run_game(screen):
 
         draw_maze()
 
-        if current_time - last_coin_spawn_time >= coin_spawn_interval:
-            last_coin_spawn_time = current_time
-            coin_position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
-            while any(coin.position == coin_position for coin in coins) or enemy.position == coin_position:
-                coin_position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
-            coins.append(Coin(position=coin_position, collected=False))
-
-
-        for coin in coins:
-            coin.draw_coin(screen)
-
-        for coin in coins:
-            if not coin.collected and player_position == coin.position:
-                coin.collected = True
-                score += 1
-                pygame.mixer.Sound(chime)
 
         draw_player(player_position)
         enemy.draw_enemy()
@@ -201,14 +189,6 @@ def run_game(screen):
             screen.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, HEIGHT - 50))
 
 
-        # Draw health bar with text in between the bottom of the maze map and the bottom of the screen
-        health_bar_y = HEIGHT + 400
-        pygame.draw.rect(screen, (255, 0, 0), (10, health_bar_y, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT))  # Red background
-        pygame.draw.rect(screen, HEALTH_BAR_COLOR,
-                         (10, health_bar_y, lives * (HEALTH_BAR_WIDTH / 3), HEALTH_BAR_HEIGHT))  # Dynamic health bar
-        health_text = info_font.render("Health Bar", True, (0, 0, 0))
-        screen.blit(health_text, (20, health_bar_y))
-
         if current_time - last_enemy_spawn_time >= enemy_spawn_interval:
             last_enemy_spawn_time = current_time
             enemy.position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
@@ -230,6 +210,21 @@ def run_game(screen):
             for proj in projectiles:
                 pygame.draw.line(screen, RED, proj[0], (proj[0][0] + proj[1][0], proj[0][1] + proj[1][1]), 2)
 
+        if current_time - last_coin_spawn_time >= coin_spawn_interval:
+            last_coin_spawn_time = current_time
+            coin_position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
+            # Check if the coin position overlaps with existing coins or the enemy, and if it's a white cell
+            while any(coin.position == coin_position for coin in coins) or enemy.position == coin_position or \
+                    maze[coin_position[1]][coin_position[0]] != 1:
+                coin_position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
+            coins.append(Coin(position=coin_position, collected=False))
+
+        for coin in coins:
+            if not coin.collected and player_position == coin.position:
+                coin.collected = True
+                score += 1
+                pygame.mixer.Sound.play(chime)
+
         if wave == 1 and len(coins) == 0:
             # Generate 3 coins for wave 1
             for _ in range(3):
@@ -242,13 +237,12 @@ def run_game(screen):
         elif wave > 1 and len(coins) < wave * 2:
             # Generate 2 additional coins for each wave after wave 1
             for _ in range(2):
-                while len(coins) < wave * 2:
+                coin_position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
+                # Check if the coin position overlaps with existing coins or the enemy, and if it's a white cell
+                while any(coin.position == coin_position for coin in coins) or enemy.position == coin_position or \
+                        maze[coin_position[1]][coin_position[0]] != 1:
                     coin_position = (random.randint(0, MAZE_WIDTH - 1), random.randint(0, MAZE_HEIGHT - 1))
-                    # Check if the coin position overlaps with existing coins or the enemy, and if it's a white cell
-                    if maze[coin_position[1]][coin_position[0]] == 1 and all(
-                            coin.position != coin_position for coin in coins) and enemy.position != coin_position:
-                        coins.append(Coin(position=coin_position, collected=False))
-                        break
+                coins.append(Coin(position=coin_position, collected=False))
         pygame.display.flip()
 
 
@@ -270,7 +264,7 @@ def run_game(screen):
         print(f"Wave: {wave}, Score: {score}, Lives: {lives}")
 
     if wave > 20:
-        pygame.mixer.Sound.play(win)
+
         win_message = score_font.render("YOU WIN!!!", True, (0, 255, 0))
         screen.blit(win_message, (WIDTH / 2 - win_message.get_width() / 2, HEIGHT / 2 - win_message.get_height() / 2))
         pygame.display.flip()
