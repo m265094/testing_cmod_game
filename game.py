@@ -35,7 +35,7 @@ def run_game(screen):
     officer = Officer()
     pygame.font.init()
     coins = []
-    coin_spawn_interval = 3500  # Time interval for spawning new coins (in milliseconds)
+    coin_spawn_interval = 2000  # Time interval for spawning new coins (in milliseconds)
     last_coin_spawn_time = pygame.time.get_ticks()
     lavas = []
     lava_spawn_interval = 3500  # Time interval for spawning new coins (in milliseconds)
@@ -70,7 +70,7 @@ def run_game(screen):
         current_time = pygame.time.get_ticks() - start_time
         clock.tick(FPS)
         required_points = 6 + (wave - 1) * 3
-        officer_spawn_interval = random.randint(15, 20) * 1000 - (wave * 500)
+        officer_spawn_interval = random.randint(15, 20) * 1000 - (wave * 1000)
         if score >= required_points:
             wave += 1
             moving_to_wave_text = score_font.render(f"Moving to Wave {wave}", True, (0, 255, 0))
@@ -106,9 +106,14 @@ def run_game(screen):
                     else:
                         officer.hide()
                         lives -= 1
-                        attention_text_visible = True
                         pygame.mixer.Sound.play(drum)
                         pygame.mixer.Sound.play(minus)
+                        # Display "TOO LATE!" text for 2 seconds
+                        too_late_text = wave_font.render("TOO EARLY!", True, (255, 0, 0))
+                        screen.blit(too_late_text, (WIDTH // 2 - too_late_text.get_width() // 2, HEIGHT - 50))
+                        pygame.display.flip()
+                        pygame.time.delay(1500)
+                        attention_text_visible = True
 
         if attention_text_visible:
             attention_text = attention_text_font.render("ATTENTION ON DECK!!!", True, (255, 0, 0))
@@ -132,7 +137,7 @@ def run_game(screen):
                 too_late_text = wave_font.render("TOO LATE!", True, (255, 0, 0))
                 screen.blit(too_late_text, (WIDTH // 2 - too_late_text.get_width() // 2, HEIGHT - 50))
                 pygame.display.flip()
-                pygame.time.delay(1000)
+                pygame.time.delay(1500)
             else:
                 text_surface = wave_font.render("A - CALL ATTENTION ON DECK", True, (255, 255, 255))
                 screen.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, HEIGHT - 50))
