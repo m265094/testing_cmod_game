@@ -4,7 +4,7 @@ import sys
 from game_parameters import *
 
 def draw_player(player_pos):
-        pygame.draw.rect(screen, RED, (player_pos[0] * CELL_SIZE, player_pos[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+        pygame.draw.rect(screen, BLUE, (player_pos[0] * CELL_SIZE, player_pos[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
 def move_player(player_pos, direction):
     new_pos = player_pos

@@ -1,4 +1,3 @@
-# officer.py
 import pygame
 import random
 from game_parameters import *
@@ -16,18 +15,20 @@ class Officer(pygame.sprite.Sprite):
         self.time_until_appear = self.base_time_until_appear
         self.base_respawn_time = 15000  # Initial respawn time in milliseconds
         self.respawn_time = self.base_respawn_time
+
     def update_time_until_appear(self, wave):
         # Adjust the respawn time based on the current wave
         self.base_respawn_time -= 1000  # Reduce the base time by 1 second for each wave
         self.base_respawn_time = max(5000, self.base_respawn_time)  # Ensure a minimum time
         self.respawn_time = self.base_respawn_time
+
     def reset_timer(self):
         self.timer = 0
+
     def show(self):
         self.visible = True
         self.timer = pygame.time.get_ticks()
         self.update_time_until_appear(wave)  # Update the respawn time based on the current wave
-
 
     def hide(self):
         self.visible = False
@@ -36,11 +37,8 @@ class Officer(pygame.sprite.Sprite):
         if self.visible:
             screen.blit(self.image, self.rect.topleft)
 
-
     def check_hit(self):
         if self.visible:
             elapsed_time = pygame.time.get_ticks() - self.timer
-            if elapsed_time <= 1500:
-                return True
-            else:
-                return False
+            return elapsed_time <= 1500
+        return False
